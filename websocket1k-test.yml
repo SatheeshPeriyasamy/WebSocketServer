@@ -1,0 +1,17 @@
+config:
+  target: "ws://localhost:8080/ws"
+  phases:
+    - duration: 120  # Test duration in seconds (2 minutes)
+      arrivalRate: 20  # Initial users arriving per second
+      rampTo: 1000  # Gradually ramp up to 1000 users
+      name: "Warmup to 1000 users"
+scenarios:
+  - engine: "ws"
+    flow:
+      - send: '{"message": "hello server"}'
+      - think: 1  # Simulate a pause of 1 second
+      - send: '{"message": "another message"}'
+      - think: 1  # Simulate a pause of 1 second
+      - send: '{"message": "final message"}'
+      - think: 1  # Simulate a pause of 1 second
+      - close: {}  # Correct way to define close action
