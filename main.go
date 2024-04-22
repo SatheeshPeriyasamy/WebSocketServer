@@ -15,19 +15,19 @@ type Client struct {
 }
 
 var (
-	clients    = sync.Map{}                 // Store clients in a concurrent map
-	broadcast  = make(chan []byte, 100)     // Buffered broadcast channel
-	workerPool = make(chan chan []byte, 10) // Channel of channels to manage worker distribution
+	clients    = sync.Map{}                
+	broadcast  = make(chan []byte, 100)    
+	workerPool = make(chan chan []byte, 10) 
 )
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		return true // Consider validating the origin in production
+		return true 
 	},
 }
 
 func main() {
-	setupWorkers(10) // Setup 10 workers
+	setupWorkers(10) 
 
 	go handleMessages()
 	go connectToBinance()
@@ -44,7 +44,7 @@ func setupWorkers(count int) {
 	for i := 0; i < count; i++ {
 		worker := make(chan []byte, 100)
 		go messageWorker(worker)
-		workerPool <- worker // Correct order: start worker then send channel to pool
+		workerPool <- worker 
 	}
 }
 
@@ -72,7 +72,7 @@ func handleMessages() {
 	for msg := range broadcast {
 		worker := <-workerPool
 		worker <- msg
-		workerPool <- worker // Ensure to return worker to pool after use
+		workerPool <- worker 
 	}
 }
 
