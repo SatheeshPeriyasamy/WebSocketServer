@@ -1,13 +1,13 @@
 config:
   target: "ws://localhost:8080/ws"
   phases:
-    - duration: 60  # test duration in seconds
-      arrivalRate: 20  # users arriving per second
+    - duration: 60  
+      arrivalRate: 20  
 scenarios:
   - engine: "ws"
     flow:
       - send: '{"message": "hello server"}'
-      - think: 1  # wait for 1 second
+      - think: 1  
       - send: '{"message": "another message"}'
-      - think: 2  # wait for 2 seconds
+      - think: 2 
       - send: '{"message": "final message"}'
